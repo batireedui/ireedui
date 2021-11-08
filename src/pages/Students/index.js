@@ -17,6 +17,7 @@ const Students = props => {
     let aa = 1;
     return (
         <>
+        {load === false ? 
         <Table striped bordered hover>
             <thead>
                 <tr>
@@ -31,8 +32,7 @@ const Students = props => {
                 {
                     irc.map((e, index) => <tr key={index}><td>{aa++}</td><td>{e.fname}</td><td>{e.lname}</td><td>{e.phone}</td><td><a href={e.cag}><Button>Засах</Button></a></td><td><a href={e.cag}><Button variant="danger">Устгах</Button></a></td></tr>)}
             </tbody>
-        </Table>
-        {load&& <Spinner/>}
+        </Table> : <Spinner/> }
         </>
     )
 }
