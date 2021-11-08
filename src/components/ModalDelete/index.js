@@ -6,7 +6,7 @@ const ModalDelete = props => {
             <Modal.Header closeButton>
                 <Modal.Title>Устгахдаа итгэлтэй байна уу?</Modal.Title>
             </Modal.Header>
-            <Modal.Body>{props.text} - Хичээлийг утсгахдаа итгэлтэй байна уу?</Modal.Body>
+            <Modal.Body>{props.text}</Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={props.onHide}>
                     Хаах

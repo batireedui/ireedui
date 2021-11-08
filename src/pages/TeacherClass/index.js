@@ -10,11 +10,13 @@ const TeacherClass = props => {
     const [addload, setAddLoad] = useState(false);
     const [modalShow, setModalShow] = useState(false);
     const [modalDelete, setModalDelete] = useState(false);
-    const [addner, setaddner] = useState("");
-    const [addcag, setaddcag] = useState(0);
-    const [addnertext, setaddnertext] = useState("");
     const [text, setText] = useState("");
     const [textid, setTextid] = useState("");
+    const options = {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        },
+    };
     useEffect(() => {
         setLoad(true);
         axios.post("/classlist.php")
@@ -37,39 +39,20 @@ const TeacherClass = props => {
     const handleClose = () => setModalShow(false);
     const handleShow = () => setModalShow(true);
 
-    const sendlesson = () => {
-        const options = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            },
-        };
-        console.log(addner.trim().length);
-        if (addner.trim().length < 1)
-            setaddnertext("Хичээлийн нэрийг оруулна уу");
-        else {
-            axios.post("/teacherlessonadd.php", {
-                "tid": 1,
-                "lname": addner
-            }, options)
-                .then(data => {
-                    setAddLoad(addload => !addload);
-                    setModalShow(false);
-                    setaddnertext("");
-                    setaddner("");
-                })
-                .catch(err => { console.log(err); setLoad(false); });
-        }
-
+    const addclass = (classid) => {
+        axios.post("/teacherclassadd.php", {
+            "tid": 1,
+            "classid": classid
+        }, options)
+            .then(data => {
+                setAddLoad(addload => !addload);
+            })
+            .catch(err => { console.log(err); setLoad(false); });
     }
 
-    const deletelesson = () => {
-        const options = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            },
-        };
-        axios.post("/deletetlesson.php", {
-            "lid": textid,
+    const deleteclass = () => {
+        axios.post("/deleteclass.php", {
+            "tclassid": textid,
         }, options)
             .then(data => {
                 console.log(data.data);
@@ -82,19 +65,19 @@ const TeacherClass = props => {
         <>
             <div style={{ display: "flex", justifyContent: "flex-end", padding: 10 }}>
                 <Button variant="primary" onClick={handleShow}>
-                    Хичээл нэмэх
+                    Хичээл заадаг анги нэмэх
                 </Button>
 
                 <ModalDelete
                     show={modalDelete}
                     onHide={() => setModalDelete(false)}
-                    onClick={deletelesson}
+                    onClick={deleteclass}
                     text={text}
                     textid={textid} />
 
                 <Modal show={modalShow} onHide={handleClose} aria-labelledby="contained-modal-title-vcenter" centered>
                     <Modal.Header closeButton>
-                        <Modal.Title>Заадаг хичээл нэмэх</Modal.Title>
+                        <Modal.Title>Бүгд ангиуд</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form>
@@ -106,14 +89,14 @@ const TeacherClass = props => {
                                             <th>#</th>
                                             <th>Анги</th>
                                             <th>Жил</th>
-                                            <th></th>e
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {classlist.map((e, index) => <tr key={index}>
                                             <td>{aa++}</td><td>{e.name}</td>
                                             <td>{e.hugacaa}</td>
-                                            <td><Button variant="success" onClick={() => { setText(e.lessonName); setTextid(e.id); setModalDelete(true) }}>Нэмэх</Button></td></tr>)}
+                                            <td><Button variant="success" onClick={() => { addclass(e.id) }}>Нэмэх</Button></td></tr>)}
                                     </tbody>
                                 </Table>
                             </Form.Group>
@@ -124,23 +107,20 @@ const TeacherClass = props => {
             </div>
             {load && <Spinner />}
             <Table striped bordered hover>
-                <thead>e
+                <thead>
                     <tr>
                         <th>#</th>
-                        <th>Нэр</th>
-                        <th>Цаг</th>
-                        <th>Төлөв</th>
-                        <th></th>
+                        <th>Анги</th>
+                        <th>Жил</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {myclass !== "nodata" ?
                         myclass.map((e, index) => <tr key={index}>
-                            <td>{aa++}</td><td>{e.lessonName}</td>
-                            <td>{e.cag}</td><td>{e.tuluv}</td>
-                            <td><Button>Засах</Button></td>
-                            <td><Button variant="danger" onClick={() => { setText(e.lessonName); setTextid(e.id); setModalDelete(true) }}>Устгах</Button></td></tr>)
+                            <td>{aa++}</td><td>{e.name}</td>
+                            <td>{e.hugacaa}</td>
+                            <td><Button variant="warning" onClick={() => { setText(e.name + " - Хичээл ордог ангиас хасах уу?"); setTextid(e.id); setModalDelete(true) }}>Устгах</Button></td></tr>)
                         : null
                     }
                 </tbody>

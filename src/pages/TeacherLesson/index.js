@@ -66,7 +66,6 @@ const TeacherLesson = props => {
             })
             .catch(err => { console.log(err); });
     }
-    console.log(irc);
     return (
         <>
             <div style={{ display: "flex", justifyContent: "flex-end", padding: 10 }}>
@@ -128,7 +127,7 @@ const TeacherLesson = props => {
                             <td>{aa++}</td><td>{e.lessonName}</td>
                             <td>{e.cag}</td><td>{e.tuluv}</td>
                             <td><Button>Засах</Button></td>
-                            <td><Button variant="danger" onClick={() => {setText(e.lessonName); setTextid(e.id); setModalDelete(true)}}>Устгах</Button></td></tr>)
+                            <td><Button variant="danger" onClick={() => {setText(e.lessonName + " - Хичээлийг утсгахдаа итгэлтэй байна уу?"); setTextid(e.id); setModalDelete(true)}}>Устгах</Button></td></tr>)
                             : null
                         }
                 </tbody>
