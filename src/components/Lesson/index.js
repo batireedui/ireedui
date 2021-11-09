@@ -25,7 +25,7 @@ const Lesson = props => {
             </thead>
             <tbody>
                 {
-                    irc.map((e, index)=> <tr key ={index}><td>{aa++}</td><td>{e.class}</td><td>{e.name}</td><td>{e.cag}</td><td><a href={e.cag}><Button>Засах</Button></a></td></tr>)}
+                    irc.map((e, index) => <tr key={index}><td>{aa++}</td><td>{e.class}</td><td>{e.name}</td><td>{e.cag}</td><td><a href={e.cag}><Button>Засах</Button></a></td></tr>)}
             </tbody>
         </Table>
 
