@@ -3,7 +3,7 @@ import { Table, Button } from 'react-bootstrap';
 import axios from "../../axios-url";
 
 const Lesson = props => {
-    const [irc, setirc] = useState([]);
+    /*const [irc, setirc] = useState([]);
     useEffect(() => {
         axios.post("/lessonshow.php")
             .then(data => setirc(data.data))
@@ -11,7 +11,7 @@ const Lesson = props => {
         return () => {
         }
     }, []);
-    let aa = 1;
+    let aa = 1;*/
     return (
         <Table striped bordered hover>
             <thead>
@@ -24,8 +24,10 @@ const Lesson = props => {
                 </tr>
             </thead>
             <tbody>
+                <div>Оруулсан ирцүүд харагдах уу</div>
                 {
-                    irc.map((e, index) => <tr key={index}><td>{aa++}</td><td>{e.class}</td><td>{e.name}</td><td>{e.cag}</td><td><a href={e.cag}><Button>Засах</Button></a></td></tr>)}
+                    //irc.map((e, index) => <tr key={index}><td>{aa++}</td><td>{e.class}</td><td>{e.name}</td><td>{e.cag}</td><td><a href={e.cag}><Button>Засах</Button></a></td></tr>)
+                }
             </tbody>
         </Table>
 

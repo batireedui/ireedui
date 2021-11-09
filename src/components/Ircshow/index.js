@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../axios-url";
-import { Table, Button, Modal, Form } from 'react-bootstrap';
+import { Table, Button, Modal, Form, Row, Col } from 'react-bootstrap';
 import Spinner from "../../components/Spinner";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -38,14 +38,22 @@ const Ircshow = props => {
     };
     return (<>
         {load && <Spinner />}
-        <Form.Select aria-label="Default select example" onChange={e => showStudent(e.target.value)} value={selectClass}>
-            <option>Хичээл орж байгаа ангиа сонго</option>
-            {myclass.map((el, index) => (
-                <option key={index} value={el.id}>{el.name}</option>
-            )
-            )}
-        </Form.Select>
-        <DatePicker selected={startdate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
+        <Form>
+            <Row className="align-items-center">
+                <Col xs="auto" className="my-1">
+                    <select className="form-control" aria-label="Default select example" onChange={e => showStudent(e.target.value)} value={selectClass}>
+                        <option>Хичээл орж байгаа ангиа сонго</option>
+                        {myclass.map((el, index) => (
+                            <option key={index} value={el.id}>{el.name}</option>
+                        )
+                        )}
+                    </select>
+                </Col>
+                <Col xs="auto" className="my-1">
+                    <DatePicker className="form-control" selected={startdate} onChange={(date) => setStartDate(date)} dateFormat="yyyy/MM/dd" />
+                </Col>
+            </Row>
+        </Form>
         <p>{selectClass}</p>
         {load === false ?
             <Table striped bordered hover>
@@ -61,11 +69,11 @@ const Ircshow = props => {
                 <tbody>
                     {studentList !== "nodata" ?
                         studentList.map((e, index) => <tr key={index}><td>{aa++}</td><td>{e.fname}</td><td>{e.lname}</td>
-                        <td>{ircTul}</td>
-                        <td><Button variant="success" onClick={() => setircTul("Ирсэн")}>Ирсэн</Button></td>
-                        <td><Button variant="warning">Өвчтэй</Button></td>
-                        <td><Button variant="primary">Чөлөөтэй</Button></td>
-                        <td><Button variant="danger"> Тасалсан</Button></td>
+                            <td>{ircTul}</td>
+                            <td><Button variant="success" onClick={() => setircTul("Ирсэн")}>Ирсэн</Button></td>
+                            <td><Button variant="warning">Өвчтэй</Button></td>
+                            <td><Button variant="primary">Чөлөөтэй</Button></td>
+                            <td><Button variant="danger"> Тасалсан</Button></td>
                         </tr>)
                         : null
                     }
