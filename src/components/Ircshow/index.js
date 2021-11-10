@@ -9,33 +9,55 @@ const Ircshow = props => {
     const [selectClass, setSelectClass] = useState("");
     const [myclass, setmyclass] = useState([]);
     const [load, setLoad] = useState(false);
-    const [ircTul, setircTul] = useState("");
     const [studentList, setStudentList] = useState([]);
     const options = {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
         },
     };
-
+    
     useEffect(() => {
         setLoad(true);
         axios.post("/teacherclass.php")
-            .then(data => { console.log(data); setmyclass(data.data); setLoad(false); })
+            .then(data => { setmyclass(data.data); setLoad(false); })
             .catch(err => { console.log(err); setmyclass("nodata"); setLoad(false); });
         return () => {
 
         }
     }, []);
-    let aa = 1;
     const showStudent = (classid) => {
         setSelectClass(classid);
         setLoad(true);
         axios.post("/studentListClass.php", {
             "classid": classid
         }, options)
-            .then(data => { console.log(data); setStudentList(data.data); setLoad(false); })
+            .then(data => { setStudentList(data.data); setLoad(false); })
             .catch(err => { console.log(err); setLoad(false); });
     };
+
+    const sendIrc = () => {
+        axios.post("/studentircadd.php", {
+            "ircObj": studentList
+        }, options)
+            .then(data => { console.log(data.data); })
+            .catch(err => { console.log(err);});
+    };
+
+    let temparrstudent = [];
+    let aa = 1;
+ 
+    const clickbtn = (id, btn) => {
+        console.log(id + "--" + btn);
+        temparrstudent = [ ...studentList];
+        for(const ele of temparrstudent){
+            if(ele.id === id)
+            {
+                ele.tuluv = btn;
+            }
+        }
+        setStudentList(temparrstudent);
+    };
+    console.log(studentList);
     return (<>
         {load && <Spinner />}
         <Form>
@@ -54,6 +76,9 @@ const Ircshow = props => {
                 </Col>
             </Row>
         </Form>
+        <Button variant="primary" onClick={sendIrc}>
+                    Хадгалах
+                </Button>
         <p>{selectClass}</p>
         {load === false ?
             <Table striped bordered hover>
@@ -62,18 +87,21 @@ const Ircshow = props => {
                         <th>#</th>
                         <th>Овог</th>
                         <th>Нэр</th>
-                        <th>Анги</th>
+                        <th>Төлөв</th>
                         <th>Утас</th>
                     </tr>
                 </thead>
                 <tbody>
                     {studentList !== "nodata" ?
-                        studentList.map((e, index) => <tr key={index}><td>{aa++}</td><td>{e.fname}</td><td>{e.lname}</td>
-                            <td>{ircTul}</td>
-                            <td><Button variant="success" onClick={() => setircTul("Ирсэн")}>Ирсэн</Button></td>
-                            <td><Button variant="warning">Өвчтэй</Button></td>
-                            <td><Button variant="primary">Чөлөөтэй</Button></td>
-                            <td><Button variant="danger"> Тасалсан</Button></td>
+                        studentList.map((e, index) =>
+                            <tr key={index}><td>{aa++}</td><td>{e.fname}</td><td>{e.lname}</td>
+                            {e.tuluv == 1 ? <td style={{color: "#198754"}}>Ирсэн</td> :
+                             (e.tuluv == 2 ? <td style={{color: "#FFC107"}}>Өвчтэй</td> : 
+                             (e.tuluv == 3 ? <td style={{color: "#0D6EFD"}}>Чөлөөтэй</td> : <td style={{color: "#DC3545"}}>Тасалсан</td>))}
+                            <td><Button variant="success" onClick={() => clickbtn(e.id, 1)}>Ирсэн</Button></td>
+                            <td><Button variant="warning" onClick={() => clickbtn(e.id, 2)}>Өвчтэй</Button></td>
+                            <td><Button variant="primary" onClick={() => clickbtn(e.id, 3)}>Чөлөөтэй</Button></td>
+                            <td><Button variant="danger" onClick={() => clickbtn(e.id, 4)}> Тасалсан</Button></td>
                         </tr>)
                         : null
                     }
