@@ -12,7 +12,7 @@ import {MyContext} from '../context/MyContext'
 const Home = () => {
 
     const state = useContext(MyContext);
-    console.log(state);
+    console.log(state.isAuth);
     // If user Logged in
     if (state.isAuth) {
         return (

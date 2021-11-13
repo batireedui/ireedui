@@ -30,7 +30,7 @@ const Ircshow = props => {
         setLoad(true);
         axios.post("/studentListClass.php", {
             "classid": classid
-        }, options)
+        })
             .then(data => { setStudentList(data.data); setLoad(false); })
             .catch(err => { console.log(err); setLoad(false); });
     };
@@ -38,7 +38,7 @@ const Ircshow = props => {
     const sendIrc = () => {
         axios.post("/studentircadd.php", {
             "ircObj": studentList
-        }, options)
+        })
             .then(data => { console.log(data.data); })
             .catch(err => { console.log(err);});
     };

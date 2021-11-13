@@ -15,17 +15,11 @@ const TeacherLesson = props => {
     const [text, setText] = useState("");
     const [textid, setTextid] = useState("");
 
-    const options = {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-    };
-
     useEffect(() => {
         setLoad(true);
         axios.post("/teacherlesson.php", {
             "tid": 1,
-        }, options)
+        })
             .then(data => { setirc(data.data); setLoad(false); })
             .catch(err => { console.log(err); setLoad(false); });
         return () => {
@@ -43,7 +37,7 @@ const TeacherLesson = props => {
             axios.post("/teacherlessonadd.php", {
                 "tid": 1,
                 "lname": addner
-            }, options)
+            })
                 .then(data => {
                     setAddLoad(addload => !addload);
                     setModalShow(false);
@@ -58,7 +52,7 @@ const TeacherLesson = props => {
     const deletelesson = () => {
         axios.post("/deletetlesson.php", {
             "lid": textid,
-        }, options)
+        })
             .then(data => {
                 console.log(data.data);
                 setAddLoad(addload => !addload);

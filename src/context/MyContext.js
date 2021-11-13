@@ -1,40 +1,45 @@
 import React, { createContext, Component, useState } from "react";
-import Axios from "../axios-url";
-export const MyContext = createContext();
+import axios from "../axios-url";
+export const MyContext = React.createContext();
 
-const MyContextProvider = () => {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+const MyContextProvider = props => {
+    //const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAuth, setIsAuth] = useState(false);
     const [theUser, setTheUser] = useState([]);
 
-    logoutUser = () => {
+    /*const logoutUser = () => {
         localStorage.removeItem('loginToken');
         setIsAuth(false);
-    }
+    }*/
 
-    loginUser = async (phone, password) => {
-
+    const loginUser = (phone, password) => {
+        console.log(phone + "----" + password);
         // Sending the user Login request
-        const login = await Axios.post('login.php', {
+        axios.post('login.php', {
             "phone": phone,
             "password": password
-        });
-        return login.data;
+        }).then(res => {
+            if (res.data.success && res.data.token) {
+                localStorage.setItem('loginToken', res.data.token);
+                isLoggedIn();
+            }
+            console.log(res.data)
+        }).catch(err => console.log(err));
     }
 
     // Checking user logged in or not
-    isLoggedIn = async () => {
+    const isLoggedIn = async () => {
         const loginToken = localStorage.getItem('loginToken');
-
+        console.log("YES");
         // If inside the local-storage has the JWT token
         if (loginToken) {
 
             //Adding JWT token to axios default header
-            Axios.defaults.headers.common['Authorization'] = 'bearer ' + loginToken;
+            axios.defaults.headers.common['Authorization'] = 'bearer ' + loginToken;
 
             // Fetching the user information
-            const { data } = await Axios.get('user-info.php');
-
+            const { data } = await axios.post('user-info.php');
+            console.log(data);
             // If user information is successfully received
             if (data.success && data.user) {
                 setIsAuth(true);
@@ -45,11 +50,10 @@ const MyContextProvider = () => {
     }
 
     return (
-        <MyContext.Provider value={{ isLoggedIn, setIsLoggedIn, isAuth, setIsAuth, theUser, setTheUser }}>
-            {this.props.children}
+        <MyContext.Provider value={{ isAuth, setIsAuth, theUser, setTheUser, loginUser }}>
+            {props.children}
         </MyContext.Provider>
     )
 }
-
 
 export default MyContextProvider;

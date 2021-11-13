@@ -7,18 +7,9 @@ const Login = () => {
     const [password, setpassword] = useState("")
     const [err, setrr] = useState("")
     const state = useContext(MyContext);
-    console.log(state.isLoggedIn);
-
     const submitForm = async (event) => {
         event.preventDefault();
-        const data = await state.loginUser(phone, password);
-        
-        if (data.success && data.token) {
-            console.log(data);
-            localStorage.setItem('loginToken', data.token);
-            state.setIsLoggedIn(true);
-            console.log(state.isLoggedIn);
-        }
+        state.loginUser(phone, password);
     }
 
     return (
