@@ -10,12 +10,6 @@ const Ircshow = props => {
     const [myclass, setmyclass] = useState([]);
     const [load, setLoad] = useState(false);
     const [studentList, setStudentList] = useState([]);
-    const options = {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-        },
-    };
-    
     useEffect(() => {
         setLoad(true);
         axios.post("/teacherclass.php")

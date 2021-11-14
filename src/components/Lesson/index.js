@@ -13,24 +13,7 @@ const Lesson = props => {
     }, []);
     let aa = 1;*/
     return (
-        <Table striped bordered hover>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Мэргэжил</th>
-                    <th>Х/нэр</th>
-                    <th>Цаг</th>
-                    <th>Үйлдэл</th>
-                </tr>
-            </thead>
-            <tbody>
-                <div>Оруулсан ирцүүд харагдах уу</div>
-                {
-                    //irc.map((e, index) => <tr key={index}><td>{aa++}</td><td>{e.class}</td><td>{e.name}</td><td>{e.cag}</td><td><a href={e.cag}><Button>Засах</Button></a></td></tr>)
-                }
-            </tbody>
-        </Table>
-
+        <div>Оруулсан ирцүүд харагдах уу</div>
     )
 }
 export default Lesson;

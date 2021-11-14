@@ -7,10 +7,11 @@ const MyContextProvider = props => {
     const [isAuth, setIsAuth] = useState(false);
     const [theUser, setTheUser] = useState([]);
 
-    /*const logoutUser = () => {
+    const logoutUser = () => {
         localStorage.removeItem('loginToken');
+        setTheUser(null);
         setIsAuth(false);
-    }*/
+    }
 
     const loginUser = (phone, password) => {
         console.log(phone + "----" + password);

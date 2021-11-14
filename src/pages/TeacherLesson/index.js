@@ -31,15 +31,18 @@ const TeacherLesson = props => {
     const handleShow = () => setModalShow(true);
 
     const sendlesson = () => {
+        
         if (addner.trim().length < 1)
             setaddnertext("Хичээлийн нэрийг оруулна уу");
         else {
             axios.post("/teacherlessonadd.php", {
                 "tid": 1,
-                "lname": addner
+                "lname": addner,
+                "cag": addcag
             })
-                .then(data => {
+                .then( data=> {
                     setAddLoad(addload => !addload);
+                    console.log(data.data);
                     setModalShow(false);
                     setaddnertext("");
                     setaddner("");
