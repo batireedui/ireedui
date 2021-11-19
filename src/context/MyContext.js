@@ -6,16 +6,16 @@ const MyContextProvider = props => {
     //const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAuth, setIsAuth] = useState(false);
     const [theUser, setTheUser] = useState([]);
-
+    const [msg, setMsg] = useState("");
     const logoutUser = () => {
         localStorage.removeItem('loginToken');
-        setTheUser(null);
+        setTheUser([]);
         setIsAuth(false);
+        
     }
-
+    console.log("logout");
+    console.log(theUser);
     const loginUser = (phone, password) => {
-        console.log(phone + "----" + password);
-        // Sending the user Login request
         axios.post('login.php', {
             "phone": phone,
             "password": password
@@ -24,7 +24,9 @@ const MyContextProvider = props => {
                 localStorage.setItem('loginToken', res.data.token);
                 isLoggedIn();
             }
-            console.log(res.data)
+            else
+                setMsg(res.data.message);
+                console.log(res.data);
         }).catch(err => console.log(err));
     }
 
@@ -51,7 +53,7 @@ const MyContextProvider = props => {
     }
 
     return (
-        <MyContext.Provider value={{ isAuth, setIsAuth, theUser, setTheUser, loginUser }}>
+        <MyContext.Provider value={{ isAuth, setIsAuth, theUser, setTheUser, loginUser, logoutUser, msg, setMsg }}>
             {props.children}
         </MyContext.Provider>
     )

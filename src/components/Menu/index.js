@@ -20,8 +20,8 @@ const Menu = () => {
                             <NavLink to="/TeacherLesson" className="nav-link">Заадаг хичээлүүд</NavLink>
                         </Nav>
                         <Nav>
-                            <Nav.Link href="#deets">{state.theUser.lname}</Nav.Link>
-                            <Nav.Link eventKey={2} href="#memes">
+                            <Nav.Link href="#">{state.theUser.lname}</Nav.Link>
+                            <Nav.Link onClick={()=> state.logoutUser()}>
                                 Гарах
                             </Nav.Link>
                         </Nav>
