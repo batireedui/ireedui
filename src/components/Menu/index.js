@@ -14,7 +14,7 @@ const Menu = () => {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
                             <NavLink to="/" className="nav-link">Эхлэл</NavLink>
-                            <NavLink to="/irc" className="nav-link">Ирц</NavLink>
+                            <NavLink to="/Ircshow" className="nav-link">Ирц</NavLink>
                             <NavLink to="/students" className="nav-link">Суралцагчид</NavLink>
                             <NavLink to="/TeacherClass" className="nav-link">Ангиуд</NavLink>
                             <NavLink to="/TeacherLesson" className="nav-link">Заадаг хичээлүүд</NavLink>

@@ -1,4 +1,4 @@
-import React, { createContext, Component, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import axios from "../axios-url";
 export const MyContext = React.createContext();
 
@@ -13,8 +13,15 @@ const MyContextProvider = props => {
         setIsAuth(false);
         
     }
-    console.log("logout");
-    console.log(theUser);
+    useEffect(() => {
+        localStorage.getItem('loginToken') ? setIsAuth(true) : setIsAuth(false);
+        axios.defaults.headers.common['Authorization'] = 'bearer ' + localStorage.getItem('loginToken');
+        isLoggedIn();
+        return () => {
+            
+        }
+    }, [])
+    
     const loginUser = (phone, password) => {
         axios.post('login.php', {
             "phone": phone,
