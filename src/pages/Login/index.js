@@ -12,11 +12,9 @@ const Login = () => {
         event.preventDefault();
         state.loginUser(phone, password);
     }
-
     const check = () => {
         setteach(teach => !teach);
     }
-    console.log(teach);
     return (
         <Container fluid="md">
             <Row  style={{ marginTop: 30}}>
