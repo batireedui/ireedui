@@ -27,7 +27,9 @@ const TeacherClass = props => {
     }, []);
     useEffect(() => {
         setLoad(true);
-        axios.post("/teacherclass.php")
+        axios.post("/teacherclass.php", {
+            "tid": parseInt(state.theUser.id)
+        })
             .then(data => { console.log(data); setmyclass(data.data); setLoad(false); })
             .catch(err => { console.log(err); setLoad(false); });
         return () => {
@@ -40,7 +42,7 @@ const TeacherClass = props => {
 
     const addclass = (classid) => {
         axios.post("/teacherclassadd.php", {
-            "tid": 1,
+            "tid": state.theUser.id,
             "classid": classid
         })
             .then(data => {
@@ -50,7 +52,9 @@ const TeacherClass = props => {
     }
 
     const deleteclass = () => {
+        console.log(textid+"222");
         axios.post("/deleteclass.php", {
+            
             "tclassid": textid,
         })
             .then(data => {

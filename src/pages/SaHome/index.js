@@ -5,15 +5,15 @@ import Spinner from "../../components/Spinner";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { MyContext } from "../../context/MyContext";
+import { NavLink } from "react-router-dom";
 import Modalinfo from "../../components/Modalinfo";
 import Login from "../Login";
-const Students = props => {
+const SaHome = props => {
     const [classList, setClassList] = useState([]);
     const [load, setLoad] = useState(false);
     const [fognoo, setfognoo] = useState(new Date());
     const [lognoo, setlognoo] = useState(new Date());
     const [cag, setcag] = useState(0);
-    const [filterVal, setfilterVal] = useState("");
     const state = useContext(MyContext);
     function toJSONLocal(date) {
         var local = new Date(date);
@@ -21,12 +21,13 @@ const Students = props => {
         return local.toJSON().slice(0, 10);
     }
     useEffect(() => {
-        axios.post("/myClass.php", {
+        axios.post("/SaHome.php", {
             "tid": state.theUser.id,
             "fognoo": toJSONLocal(fognoo),
             "lognoo": toJSONLocal(lognoo)
         })
             .then(data => {
+                console.log(data.data);
                 setClassList(data.data);
                 if (typeof (data.data) === "object")
                     setcag(parseInt(data.data.length) * 2);
@@ -38,36 +39,9 @@ const Students = props => {
 
         }
     }, [fognoo, lognoo])
-    let filterArr = [];
-    let unique = [];
-    if (filterVal !== "") {
-        for (let i = 0; i < classList.length; i++) {
-            if (classList[i].tuluv == filterVal) {
-                filterArr.push(classList[i]);
-            }
-        }
-        try {
-            unique = [...new Set(filterArr.map(item => item.ognoo))];
-        }
-        catch (err) {
-
-        }
-    }
-    else {
-        filterArr = classList;
-        try {
-            unique = [...new Set(filterArr.map(item => item.ognoo))];
-        }
-        catch (err) {
-
-        }
-    }
-
-
-    console.log(unique);
     let aa = 1;
     return <>
-        <Row className="align-items-end">
+        <Row className="align-items-center">
             <Col xs="2" className="my-1">
                 <label>Эхлэх огноо</label>
                 <DatePicker className="form-control"
@@ -84,51 +58,42 @@ const Students = props => {
                     }}
                     dateFormat="yyyy/MM/dd" />
             </Col>
-            <Col xs="auto" className="my-1">
-                <Button variant="secondary" onClick={() => setfilterVal(4)}> Тасалсан</Button>
-            </Col>
-            <Col xs="auto" className="my-1">
-                <Button variant="secondary" onClick={() => setfilterVal(3)}> Чөлөөтэй</Button>
-            </Col>
-            <Col xs="auto" className="my-1">
-                <Button variant="secondary" onClick={() => setfilterVal(2)}> Өвчтэй</Button>
-            </Col>
-            <Col xs="auto" className="my-1">
-                <Button variant="secondary" onClick={() => setfilterVal("")}> Бүгд</Button>
+            <Col xs="4" className="my-1">
+                <Alert variant="primary" className="form-control">Таны нийт заасан цаг: {cag}</Alert>
             </Col>
         </Row>
-        {typeof (unique) !== "string" ?
-            unique.length > 0 ?
-                unique.map((e, index) =>
-                    <Button key={index} variant="secondary">{e}</Button>
-                )
-                : null : null
-        }
         {load === false ?
             <Table striped bordered hover>
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Огноо</th>
-                        <th>Нэр</th>
-                        <th>Төлөв</th>
-                        <th>Хичээлийн нэр</th>
-                        <th>Цаг</th>
+                        <th>Анги</th>
+                        <th>Тоо</th>
+                        <th>Х/цаг</th>
+                        <th>Ирсэн</th>
+                        <th>Өвчтэй</th>
+                        <th>Чөлөөтэй</th>
+                        <th>Тасалсан</th>
+                        <th>Нийт</th>
+                        <th>Хувь</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {typeof (filterArr) !== "string" ?
-                        filterArr.length > 0 ?
-                            filterArr.map((e, index) =>
+                    {typeof (classList) !== "string" ?
+                        classList.length > 0 ?
+                            classList.map((e, index) =>
                                 <tr key={index}>
                                     <td>{aa++}</td>
-                                    <td>{e.ognoo}</td>
-                                    <td>{e.fname} {e.lname}</td>
-                                    {e.tuluv == 1 ? <td style={{ color: "#198754" }}>Ирсэн</td> :
-                                        (e.tuluv == 2 ? <td style={{ color: "#31D2F2" }}>Өвчтэй</td> :
-                                            (e.tuluv == 3 ? <td style={{ color: "#0D6EFD" }}>Чөлөөтэй</td> : <td style={{ color: "#FF0000" }}>Тасалсан</td>))}
-                                    <td>{e.lessonName}</td>
-                                    <td>{e.cag}-р цаг</td>
+                                    <td>{e.name}</td>
+                                    <td>{e.stoo}</td>
+                                    <td>{(parseInt(e.tas) + parseInt(e.u) + parseInt(e.chu) + parseInt(e.irsen)) * 2 / parseInt(e.stoo)}</td>
+                                    <td>{e.irsen * 2}</td>
+                                    <td>{e.u * 2}</td>
+                                    <td>{e.chu * 2}</td>
+                                    <td>{e.tas * 2}</td>
+                                    <td>{(parseInt(e.tas) + parseInt(e.u) + parseInt(e.chu) + parseInt(e.irsen)) * 2}</td>
+                                    <td>{((parseInt(e.irsen) + parseInt(e.u) + parseInt(e.chu)) / (parseInt(e.tas) + parseInt(e.u) + parseInt(e.chu) + parseInt(e.irsen)) * 100).toFixed(2)}</td>
+                                    <td><NavLink to={{ pathname: `/SaStudent/`, search: `id=${e.id}&fognoo=${toJSONLocal(fognoo)}&lognoo=${toJSONLocal(lognoo)}` }} className="nav-link">Суралцагчаар</NavLink></td>
                                 </tr>)
                             : null : null
                     }
@@ -136,4 +101,4 @@ const Students = props => {
             </Table> : <Spinner />}
     </>
 }
-export default Students;
+export default SaHome;

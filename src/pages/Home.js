@@ -9,27 +9,43 @@ import TeacherLesson from "./TeacherLesson";
 import Ircshow from './Ircshow';
 import HomePage from './HomePage';
 import Login from "./Login";
-import {MyContext} from '../context/MyContext'
+import SaHome from './SaHome';
+import Negtgel from './Students/Negtgel';
+import { MyContext } from '../context/MyContext'
+import SaStudent from './SaStudent';
 const Home = () => {
 
     const state = useContext(MyContext);
-    console.log("Төлөв" + state.isAuth);
-    // If user Logged in
     if (state.isAuth) {
-        return (
-            <Container>
-                <Menu />
-                <Switch>
-                    <Route path="/Ircshow" component={Ircshow} />
-                    <Route path="/students" component={Students} />
-                    <Route path="/TeacherClass" component={TeacherClass} />
-                    <Route path="/TeacherLesson" component={TeacherLesson} />
-                    <Route path="/" component={HomePage} />
-                </Switch>
-            </Container>
-        )
+        if (state.userType == false) {
+            return (
+                <Container>
+                    <Menu />
+                    <Switch>
+                        <Route path="/Ircshow" component={Ircshow} />
+                        <Route path="/students/negtgel" component={Negtgel} />
+                        <Route path="/students" component={Students} />
+                        <Route path="/TeacherClass" component={TeacherClass} />
+                        <Route path="/TeacherLesson" component={TeacherLesson} />
+                        <Route path="/" component={HomePage} />
+                    </Switch>
+                </Container>
+            )
+        }
+        else
+        {
+            return (
+                <Container>
+                    <Menu />
+                    <Switch>
+                        <Route path="/SaHome" component={SaHome} />
+                        <Route path="/SaStudent" component={SaStudent} />
+                        <Route path="/" component={HomePage} />
+                    </Switch>
+                </Container>
+            )
+        }
     }
-    // Showing Login Or Register Page According to the condition
     else {
         return <Login />;
     }

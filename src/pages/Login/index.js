@@ -10,10 +10,11 @@ const Login = () => {
     const state = useContext(MyContext);
     const submitForm = async (event) => {
         event.preventDefault();
-        state.loginUser(phone, password);
+        await state.loginUser(phone, password, teach);
     }
     const check = () => {
         setteach(teach => !teach);
+        console.log(teach);
     }
     return (
         <Container fluid="md">
@@ -29,12 +30,12 @@ const Login = () => {
 
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>Утасны дугаар</Form.Label>
-                                <Form.Control type="text" placeholder="Enter email" value={phone} onChange={e => setphone(e.target.value)} required />
+                                <Form.Control type="text" placeholder="Утасны дугаар" value={phone} onChange={e => setphone(e.target.value)} required />
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="formBasicPassword">
                                 <Form.Label>Нууц үг</Form.Label>
-                                <Form.Control type="password" placeholder="Password" value={password} onChange={e => setpassword(e.target.value)} />
+                                <Form.Control type="password" placeholder="Нууц үг" value={password} onChange={e => setpassword(e.target.value)} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="formBasicPassword">
                                 <Form.Text style={{ color: '#d60003' }}>{state.msg}</Form.Text>

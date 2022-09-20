@@ -20,7 +20,7 @@ const TeacherLesson = props => {
     useEffect(() => {
         setLoad(true);
         axios.post("/teacherlesson.php", {
-            "tid": 1,
+            "tid": parseInt(state.theUser.id),
         })
             .then(data => { setirc(data.data); setLoad(false); })
             .catch(err => { console.log(err); setLoad(false); });
@@ -38,7 +38,7 @@ const TeacherLesson = props => {
             setaddnertext("Хичээлийн нэрийг оруулна уу");
         else {
             axios.post("/teacherlessonadd.php", {
-                "tid": 1,
+                "tid": parseInt(state.theUser.id),
                 "lname": addner,
                 "cag": addcag
             })
