@@ -54,7 +54,7 @@ const TeacherClass = props => {
     const deleteclass = () => {
         console.log(textid+"222");
         axios.post("/deleteclass.php", {
-            
+            "tid": state.theUser.id,
             "tclassid": textid,
         })
             .then(data => {
