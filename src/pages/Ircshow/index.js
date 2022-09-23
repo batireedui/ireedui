@@ -13,9 +13,10 @@ const Ircshow = props => {
     const [selectCag, setSelectCag] = useState("1");
     const [selectLesson, setSelectLesson] = useState("0");
     const [myclass, setmyclass] = useState([]);
+    const [mylesson, setmylesson] = useState([]);
     const [load, setLoad] = useState(false);
     const [studentList, setStudentList] = useState([]);
-    const [mylesson, setmylesson] = useState([]);
+    
     const [error, setError] = useState("");
     const state = useContext(MyContext);
     const [ModalinfoState, setModalinfoState] = useState(false);
